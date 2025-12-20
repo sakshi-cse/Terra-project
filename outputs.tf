@@ -3,22 +3,15 @@ output "vpc_id" {
   value       = module.vpc.vpc_id
 }
 
-output "public_subnet_ids" {
-  value       = module.vpc.public_subnets
+#########EC2#############
+output "bastion_instance_id" {
+  value = module.ec2.bastion_instance_id
 }
 
-output "private_subnet_ids" {
-  value       = module.vpc.private_subnets
+output "bastion_public_ip" {
+  value = module.ec2.bastion_public_ip
 }
 
-output "nat_gateway_ids" {
-  value       = module.vpc.natgw_ids
-}
-
-output "internet_gateway_id" {
-  value       = module.vpc.igw_id
-}
-
-output "vpc_cidr_block" {
-  value       = module.vpc.vpc_cidr_block
+output "bastion_private_ip" {
+  value = module.ec2.bastion_private_ip
 }
