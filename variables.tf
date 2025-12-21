@@ -38,3 +38,15 @@ variable "node_desired_size" {
   type    = number
   default = 1
 }
+
+
+
+##ecr-build-pipeline###
+variable "github_owner" {}
+variable "github_repo" {}
+variable "github_token" {
+  sensitive   = true
+}
+variable "ecr_repo_name" {}
+variable "codebuild_project_name" {}
+variable "codepipeline_project_name" {}

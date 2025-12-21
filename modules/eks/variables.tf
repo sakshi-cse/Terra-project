@@ -43,6 +43,10 @@ variable "node_desired_size" {
   type    = number
   default = 1
 }
+variable "namespace" {
+  type = string
+  default = "dev"
+}
 
 variable "environment" {
   type    = string

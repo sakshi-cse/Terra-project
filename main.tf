@@ -49,3 +49,23 @@ module "eks" {
 
   environment = var.environment
 }
+
+module "ecr" {
+  source    = "./modules/ecr"
+  repo_name = var.ecr_repo_name
+}
+
+module "codebuild" {
+  source       = "./modules/codebuild"
+  project_name = var.codebuild_project_name
+  ecr_repo     = module.ecr.repository_url
+}
+
+module "codepipeline" {
+  source             = "./modules/codepipeline"
+  project_name       = var.codepipeline_project_name
+  github_owner       = var.github_owner
+  github_repo        = var.github_repo
+  github_token       = var.github_token
+  codebuild_project  = module.codebuild.project_name
+}
