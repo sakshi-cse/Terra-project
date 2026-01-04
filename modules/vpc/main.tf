@@ -7,13 +7,13 @@ module "vpc" {
     region = var.region
 
     azs = var.azs
-    public_subnets  = var.public_subnet_cidrs
+    public_subnets = var.public_subnet_cidrs
     private_subnets = var.private_subnet_cidrs
 
     single_nat_gateway = true
     enable_nat_gateway = true
     tags = {
-     Project     = var.project_name
+     Project = var.project_name
      Environment = var.environment
      ManagedBy   = "terraform"
   } 

@@ -3,7 +3,14 @@ resource "random_password" "rds" {
   special = true
 }
 
+resource "aws_db_subnet_group" "this" {
+  name = "${var.project_name}-${var.environment}-db-subnet-group"
+  subnet_ids = var.private_subnets
 
+  tags = {
+    Name = "${var.project_name}-${var.environment}-db-subnet-group"
+  }
+}
 
 module "rds_instance" {
   source = "terraform-aws-modules/rds/aws"
@@ -11,19 +18,22 @@ module "rds_instance" {
 
   identifier = var.identifier
 
-  engine         = var.engine
+  engine = var.engine
   engine_version = var.engine_version
   instance_class = var.instance_class
 
   db_name  = var.db_name
   username = var.username
-  port     = var.port
+  port = var.port
+    
+  db_subnet_group_name = aws_db_subnet_group.this.name
 
   vpc_security_group_ids = [aws_security_group.rds.id]
 
   allocated_storage = var.allocated_storage
   deletion_protection = var.deletion_protection
   password = random_password.rds.result
+  manage_master_user_password = true
   create_db_parameter_group = true
   family = "mysql8.0"
   create_db_option_group     = true
@@ -42,16 +52,16 @@ resource "aws_security_group" "rds" {
   vpc_id = var.vpc_id
 
   ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
     cidr_blocks = [var.allowed_ip]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

@@ -4,12 +4,12 @@ variable "identifier" {
 }
 
 variable "engine" {
-  type    = string
+  type = string
   default = "mysql"
 }
 
 variable "engine_version" {
-  type    = string
+  type = string
   default = "8.0"
 }
 
@@ -34,13 +34,11 @@ variable "username" {
 }
 
 variable "port" {
-  type    = number
+  type = number
   default = 3306
 }
 
-variable "private_subnets" {
-  type = string
-}
+
 
 variable "vpc_id" {
   type = string
@@ -62,6 +60,12 @@ variable "environment" {
 }
 
 variable "deletion_protection" {
-  type    = bool
+  type = bool
   default = false
+}
+
+
+variable "private_subnets" {
+  description = "Private subnets for DB"
+  type = list(string)
 }

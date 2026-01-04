@@ -4,16 +4,16 @@ resource "aws_security_group" "bastion" {
   vpc_id = var.vpc_id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
     cidr_blocks = [var.allowed_ip]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -23,7 +23,7 @@ resource "aws_security_group" "bastion" {
 }
 ########pem-key#####
 resource "aws_key_pair" "bastion" {
-  key_name   = "bastion-server"
+  key_name = "bastion-server"
   public_key = file("~/.ssh/bastion-server.pub")
 }
 
@@ -43,7 +43,7 @@ resource "aws_instance" "bastion" {
 
   tags = {
     Name = "demo-bastion-server"
-    Project     = "demo"
+    Project = "demo"
     Environment = "dev"
   }
 }

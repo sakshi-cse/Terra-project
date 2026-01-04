@@ -41,7 +41,7 @@ variable "node_desired_size" {
 
 
 
-##ecr-build-pipeline###
+##################github################
 variable "github_owner" {}
 variable "github_repo" {}
 variable "github_token" {
