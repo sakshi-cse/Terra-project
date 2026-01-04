@@ -36,8 +36,8 @@ module "rds_instance" {
   manage_master_user_password = true
   create_db_parameter_group = true
   family = "mysql8.0"
-  create_db_option_group     = true
-  major_engine_version       = "8.0"
+  create_db_option_group = true
+  major_engine_version = "8.0"
 
 
   tags = {
