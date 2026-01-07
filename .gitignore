@@ -4,4 +4,3 @@ terraform.tfstate.*
 *.tfvars
 .vscode/
 .DS_Store
-*.lock.hcl
