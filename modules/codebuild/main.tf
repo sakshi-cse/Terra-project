@@ -36,6 +36,10 @@ resource "aws_codebuild_project" "this" {
       name  = "ECR_REPO"
       value = var.ecr_repo
     }
+    environment_variable {
+      name  = "AWS_REGION"
+      value = var.aws_region
+    }
   }
 
   source {
