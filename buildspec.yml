@@ -4,7 +4,8 @@ env:
   variables:
     AWS_REGION: us-west-1
     ECR_REPO_NAME: node-app
-    IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+    IMAGE_TAG: =$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
     EKS_CLUSTER_NAME: demo-dev-eks
 
 phases:
