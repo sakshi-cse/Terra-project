@@ -5,6 +5,7 @@ env:
     AWS_REGION: us-west-1
     ECR_REPO_NAME: node-app
     IMAGE_TAG: latest
+    EKS_CLUSTER_NAME: demo-dev-eks
 
 phases:
   install:
@@ -33,10 +34,17 @@ phases:
       - echo "Pushing Docker image to ECR"
       - docker push $ECR_URI/$ECR_REPO_NAME:$IMAGE_TAG
       - echo "Build completed successfully"
-      - sed -i "s|ACCOUNT_ID|$ACCOUNT_ID|g" k8s/deployment.yaml
-      - kubectl apply -f k8s/
-      - echo "Deployment completed successfully"
+      - echo "Updating kubeconfig"
+    - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
 
+    - echo "Replacing image values"
+    - sed -i "s|ACCOUNT_ID|$ACCOUNT_ID|g" k8s/deployment.yaml
+    - sed -i "s|IMAGE_TAG|$IMAGE_TAG|g" k8s/deployment.yaml
+
+    - echo "Deploying to EKS"
+    - kubectl apply -f k8s/
+
+    - echo "Deployment completed successfully"
 artifacts:
   files:
     - '**/*'
