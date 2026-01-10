@@ -4,8 +4,6 @@ env:
   variables:
     AWS_REGION: us-west-1
     ECR_REPO_NAME: node-app
-    IMAGE_TAG: $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-
     EKS_CLUSTER_NAME: demo-dev-eks
 
 phases:
@@ -20,7 +18,7 @@ phases:
     commands:
       - echo "Logging in to Amazon ECR"
       - aws --version
-      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:7}      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
       - ECR_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
 
