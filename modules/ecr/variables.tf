@@ -1,6 +1,6 @@
 variable "repo_name" {
     type = string
-    default = "app-dev-ecr"
+    default = "node-app"
 }
 
 variable "account_id" {

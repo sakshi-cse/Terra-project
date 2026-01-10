@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: us-west-1
+    ECR_REPO_NAME: node-app
+    IMAGE_TAG: latest
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies"
+      - npm install -f
+
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR"
+      - aws --version
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - ECR_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
+
+  build:
+    commands:
+      - echo "Building Docker image"
+      - docker build -t $ECR_REPO_NAME:$IMAGE_TAG .
+      - docker tag $ECR_REPO_NAME:$IMAGE_TAG $ECR_URI/$ECR_REPO_NAME:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo "Pushing Docker image to ECR"
+      - docker push $ECR_URI/$ECR_REPO_NAME:$IMAGE_TAG
+      - echo "Build completed successfully"
+      - sed -i "s|ACCOUNT_ID|$ACCOUNT_ID|g" k8s/deployment.yaml
+      - kubectl apply -f k8s/
+      - echo "Deployment completed successfully"
+
+artifacts:
+  files:
+    - '**/*'

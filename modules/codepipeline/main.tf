@@ -50,7 +50,7 @@ resource "aws_codepipeline" "this" {
 
       configuration = {
         ConnectionArn = aws_codestarconnections_connection.github.arn
-        FullRepositoryId = "${var.github_owner}/${var.github_repo}"
+        FullRepositoryId = "${var.github_repo}"
         BranchName = "main"
         DetectChanges = true
 
