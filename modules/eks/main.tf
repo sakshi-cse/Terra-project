@@ -33,11 +33,16 @@ module "eks" {
       desired_size = var.node_desired_size
     }
   }
-
+ 
   tags = {
     Environment = var.environment
     Terraform = "true"
   }
 }
+
+
+
+
+
 
 

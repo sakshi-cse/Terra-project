@@ -17,6 +17,20 @@ resource "aws_iam_role_policy_attachment" "codebuild_admin" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+resource "aws_iam_role_policy_attachment" "eks_permissions" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_worker_permissions" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_readonly" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
 
 resource "aws_codebuild_project" "this" {
   name = var.project_name
